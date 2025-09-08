@@ -34,7 +34,27 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody Map<String, String> requestMap) {
         try {
             return userService.login(requestMap);
-        }catch (Exception exception){
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return FacturaUtils.getResponseEntity(FacturaConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> requestMap) {
+        try {
+            return userService.forgotPassword(requestMap);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return FacturaUtils.getResponseEntity(FacturaConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> requestMap) {
+        try {
+            return userService.resetPassword(requestMap);
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
         return FacturaUtils.getResponseEntity(FacturaConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
