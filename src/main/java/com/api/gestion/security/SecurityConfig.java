@@ -38,10 +38,15 @@ public class SecurityConfig {
                 ))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/login", "/user/signup", "/user/forgotPassword").permitAll()
+                        .requestMatchers(
+                                "/user/login",
+                                "/user/signup",
+                                "/user/forgotPassword",
+                                "/user/resetPassword").permitAll()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(ex -> {})
+                .exceptionHandling(ex -> {
+                })
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
