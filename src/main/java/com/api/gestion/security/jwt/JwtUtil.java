@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.yaml.snakeyaml.tokens.Token.ID.Key;
-
 @Service
 public class JwtUtil {
-
-    private final String secret = "MI_CLAVE_SUPER_SEGURA_DE_AL_MENOS_32_CARACTERES_1234";
+    @Value("${jwt.secret}")
+    private String secret;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
@@ -38,7 +37,11 @@ public class JwtUtil {
     }
 
     public Claims extractAllClaims(String token){
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     private Boolean isTokenExpired(String token){
